@@ -11,7 +11,7 @@ class Circuit
     public $elements;
     public $nodes;
 
-    public function fillCurrents()
+    public function prepare($f = 0)
     {
         $n = count($this->nodes);
 
@@ -26,18 +26,7 @@ class Circuit
                     if ($e->pins[1] == $i+1) $this->I[$i] += $e->I;
                 }
             }
-        }
-    }
 
-    public function fillTransconductances($f = 0)
-    {
-        // Gij | i=j => sum of conductances of contacting elements (including sources), otherwise conductance between points with minus sign
-        // incoming currents are +
-
-        $n = count($this->nodes);
-
-        for ($i = 0; $i < $n; $i++)
-        {
             for ($j = 0; $j < $n; $j++)
             {
                 $this->G[$i][$j] = 0;

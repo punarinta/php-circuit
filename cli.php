@@ -9,8 +9,7 @@ if ($argc < 2)
 
 $c = new Circuit;
 $c->fromSpice(file_get_contents($argv[1]));
-$c->fillCurrents();
-$c->fillTransconductances();
+$c->prepare();
 $c->solve();
 
 /*print_r($c->elements);
