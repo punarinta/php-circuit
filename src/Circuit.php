@@ -11,6 +11,11 @@ class Circuit
     public $elements;
     public $nodes;
 
+    /**
+     * Prepares G and I matrices
+     *
+     * @param int $f
+     */
     public function prepare($f = 0)
     {
         $n = count($this->nodes);
@@ -61,6 +66,9 @@ class Circuit
         }
     }
 
+    /**
+     * Solves G x E = J matrix equation
+     */
     public function solve()
     {
         $n = count($this->nodes);
@@ -103,6 +111,12 @@ class Circuit
         return $ids;
     }
 
+    /**
+     * Returns node's literal name by its internal id
+     *
+     * @param $id
+     * @return mixed
+     */
     public function getNodeName($id)
     {
         return array_keys($this->nodes, $id + 1)[0];
@@ -127,31 +141,31 @@ class Circuit
             switch (strtoupper($w[0][0]))
             {
                 case 'R';
-                    $e = new Element(Element::TYPE_RESISTOR, $w[3]);
+                    $e = new Element($w[0], Element::TYPE_RESISTOR, $w[3]);
                     $e->pins = $this->pushNodes([$w[1], $w[2]]);
                     $this->elements[] = $e;
                     break;
 
                 case 'C';
-                    $e = new Element(Element::TYPE_CAPACITOR, $w[3]);
+                    $e = new Element($w[0], Element::TYPE_CAPACITOR, $w[3]);
                     $e->pins = $this->pushNodes([$w[1], $w[2]]);
                     $this->elements[] = $e;
                     break;
 
                 case 'L';
-                    $e = new Element(Element::TYPE_INDUCTOR, $w[3]);
+                    $e = new Element($w[0], Element::TYPE_INDUCTOR, $w[3]);
                     $e->pins = $this->pushNodes([$w[1], $w[2]]);
                     $this->elements[] = $e;
                     break;
 
                 case 'I';
-                    $e = new Element(Element::TYPE_CURRENT, $w[4]);
+                    $e = new Element($w[0], Element::TYPE_CURRENT, $w[4]);
                     $e->pins = $this->pushNodes([$w[1], $w[2]]);
                     $this->elements[] = $e;
                     break;
 
                 case 'V';
-                    $e = new Element(Element::TYPE_VOLTAGE, $w[4]);
+                    $e = new Element($w[0], Element::TYPE_VOLTAGE, $w[4]);
                     $e->pins = $this->pushNodes([$w[1], $w[2]]);
                     $this->elements[] = $e;
                     break;

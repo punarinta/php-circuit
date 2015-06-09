@@ -13,12 +13,23 @@ class Element
     public $C;
     public $I;
     public $pins;
+    public $name;
+    public $type;
 
-    public function __construct($type = self::TYPE_RESISTOR, $value = 1)
+    /**
+     * Creates and populates an element
+     *
+     * @param $name
+     * @param int $type
+     * @param int $value
+     */
+    public function __construct($name, $type = self::TYPE_RESISTOR, $value = 1)
     {
         $this->R = 0;
         $this->L = 0;
-        $this->R = 0;
+        $this->C = 0;
+        $this->type = $type;
+        $this->name = $name;
 
         switch ($type)
         {
