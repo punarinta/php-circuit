@@ -102,6 +102,8 @@ class Matrix
             {
                 if ($A[$i][$j] !== 0)
                 {
+                    if (!$A[$i][$j]) continue;
+
                     $scalar = $A[$j][$j] / $A[$i][$j];
                     for ($jj = $i; $jj < $n * 2; ++$jj)
                     {
@@ -117,6 +119,8 @@ class Matrix
         {
             if ($A[$j][$j] !== 1)
             {
+                if (!$A[$j][$j]) continue;
+
                 $scalar = 1 / $A[$j][$j];
                 for ($jj = $j; $jj < $n * 2; ++$jj)
                 {
