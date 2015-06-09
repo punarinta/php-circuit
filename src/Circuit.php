@@ -131,10 +131,16 @@ class Circuit
     {
         foreach (explode("\n", $code) as $line)
         {
-            $w = explode(' ', $line);
+            $w = explode(' ', trim($line));
 
             if (!isset ($w[0][0]))
             {
+                continue;
+            }
+
+            if ($w[0][0] == '*')
+            {
+                // that's a comment
                 continue;
             }
 

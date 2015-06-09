@@ -1,3 +1,5 @@
+* Sample voltage divider
+
 V1 0 UCC DC 2
 
 R1 0 A 10
