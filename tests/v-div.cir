@@ -1,0 +1,6 @@
+V1 0 UCC DC 2
+
+R1 0 A 10
+R2 A B 10
+R3 A B 10
+R4 B UCC 10
