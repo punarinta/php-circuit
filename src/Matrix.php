@@ -3,43 +3,6 @@
 class Matrix
 {
     /**
-     * @param $w
-     * @param null $h
-     * @return array
-     */
-    static public function create($w, $h = null)
-    {
-        $A = [];
-
-        if (!$h) $h = $w;
-
-        for ($i = 0; $i < $h; $i++)
-        {
-            $A[$i] = array_fill(0, $w, 0.0);
-        }
-
-        return $A;
-    }
-
-    /**
-     * @param $A
-     * @return mixed
-     */
-    static public function randomize($A)
-    {
-        foreach ($A as $k1 => $v1)
-        {
-            foreach ($v1 as $k2 => $v2)
-            {
-                $A[$k1][$k2] = mt_rand(0, 100);
-                usleep(1000);
-            }
-        }
-
-        return $A;
-    }
-
-    /**
      * @param $A
      * @return string
      */
