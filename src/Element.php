@@ -51,10 +51,20 @@ class Element
                 break;
 
             case self::TYPE_VOLTAGE:
-                $this->R = 1e-18;
-                $this->I = $value / 1e-18;
+                $this->setVoltage($value);
                 break;
         }
+    }
+
+    /**
+     * Sets a voltage source within the element
+     *
+     * @param $V
+     */
+    public function setVoltage($V)
+    {
+        $this->R = 1e-18;
+        $this->I = $V / 1e-18;
     }
 
     /**

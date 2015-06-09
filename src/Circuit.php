@@ -123,59 +123,34 @@ class Circuit
     }
 
     /**
-     * Imports schematics from SPICE data
+     * Finds an element by its name
      *
-     * @param $code
+     * @param $name
+     * @return null
      */
-    public function fromSpice($code)
+    public function findElementByName($name)
     {
-        foreach (explode("\n", $code) as $line)
+        foreach ($this->elements as $e)
         {
-            $w = explode(' ', trim($line));
-
-            if (!isset ($w[0][0]))
-            {
-                continue;
-            }
-
-            if ($w[0][0] == '*')
-            {
-                // that's a comment
-                continue;
-            }
-
-            switch (strtoupper($w[0][0]))
-            {
-                case 'R';
-                    $e = new Element($w[0], Element::TYPE_RESISTOR, $w[3]);
-                    $e->pins = $this->pushNodes([$w[1], $w[2]]);
-                    $this->elements[] = $e;
-                    break;
-
-                case 'C';
-                    $e = new Element($w[0], Element::TYPE_CAPACITOR, $w[3]);
-                    $e->pins = $this->pushNodes([$w[1], $w[2]]);
-                    $this->elements[] = $e;
-                    break;
-
-                case 'L';
-                    $e = new Element($w[0], Element::TYPE_INDUCTOR, $w[3]);
-                    $e->pins = $this->pushNodes([$w[1], $w[2]]);
-                    $this->elements[] = $e;
-                    break;
-
-                case 'I';
-                    $e = new Element($w[0], Element::TYPE_CURRENT, $w[4]);
-                    $e->pins = $this->pushNodes([$w[1], $w[2]]);
-                    $this->elements[] = $e;
-                    break;
-
-                case 'V';
-                    $e = new Element($w[0], Element::TYPE_VOLTAGE, $w[4]);
-                    $e->pins = $this->pushNodes([$w[1], $w[2]]);
-                    $this->elements[] = $e;
-                    break;
-            }
+            if (!strcasecmp($e->name, $name)) return $e;
         }
+
+        return null;
+    }
+
+    /**
+     * Finds a node by its name
+     *
+     * @param $name
+     * @return null
+     */
+    public function findNodeByName($name)
+    {
+        foreach ($this->nodes as $n => $v)
+        {
+            if (!strcasecmp($n, $name)) return $v;
+        }
+
+        return null;
     }
 }

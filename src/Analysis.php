@@ -22,6 +22,49 @@ class Analysis
     }
 
     /**
+     * Sweeps a DC source
+     *
+     * @param $circuit
+     * @param $source
+     * @param $start
+     * @param $stop
+     * @param $step
+     * @return array
+     * @throws Exception
+     */
+    static public function dc($circuit, $source, $start, $stop, $step)
+    {
+        $ops = [];
+
+        for ($X = $start; $X <= $stop; $X += $step)
+        {
+            if (!$element = $circuit->findElementByName($source))
+            {
+                throw new \Exception("Element '$source' not found.");
+            }
+
+            switch ($element->type)
+            {
+                case Element::TYPE_CURRENT:
+                    $element->I = $X;
+                    break;
+
+                case Element::TYPE_VOLTAGE:
+                    $element->setVoltage($X);
+                    break;
+
+                default:
+                    throw new \Exception("Element '$source' is not a source.");
+            }
+
+            self::dcop($circuit);
+            $ops[(string)$X] = $circuit->V;
+        }
+
+        return $ops;
+    }
+
+    /**
      * Shows voltages in the nodes
      *
      * @param $circuit
@@ -30,14 +73,12 @@ class Analysis
      */
     static public function showVoltages($circuit, $return = false)
     {
-        $text = "Node voltages:\n\n";
+        $text = "Operating point:\n\n";
 
         foreach ($circuit->V as $k => $v)
         {
-            $text .= 'V(' . $circuit->getNodeName($k) . ') = ' . number_format($v, 6) . " V\n";
+            $text .= 'V(' . $circuit->getNodeName($k) . ") \t\t = " . number_format($v, 6) . " V\n";
         }
-
-        $text .= "\n";
 
         return $return ? $text : print($text);
     }
