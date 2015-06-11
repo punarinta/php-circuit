@@ -2,6 +2,7 @@
 
 require_once 'Circuit.php';
 require_once 'Analysis.php';
+require_once 'Format.php';
 
 class Spice
 {
@@ -36,31 +37,31 @@ class Spice
             switch ($w[0][0])
             {
                 case 'R';
-                    $e = new Element($w[0], Element::TYPE_RESISTOR, $w[3]);
+                    $e = new Element($w[0], Element::TYPE_RESISTOR, Format::toFloat($w[3]));
                     $e->pins = $circuit->pushNodes([$w[1], $w[2]]);
                     $circuit->elements[] = $e;
                     break;
 
                 case 'C';
-                    $e = new Element($w[0], Element::TYPE_CAPACITOR, $w[3]);
+                    $e = new Element($w[0], Element::TYPE_CAPACITOR, Format::toFloat($w[3]));
                     $e->pins = $circuit->pushNodes([$w[1], $w[2]]);
                     $circuit->elements[] = $e;
                     break;
 
                 case 'L';
-                    $e = new Element($w[0], Element::TYPE_INDUCTOR, $w[3]);
+                    $e = new Element($w[0], Element::TYPE_INDUCTOR, Format::toFloat($w[3]));
                     $e->pins = $circuit->pushNodes([$w[1], $w[2]]);
                     $circuit->elements[] = $e;
                     break;
 
                 case 'I';
-                    $e = new Element($w[0], Element::TYPE_CURRENT, $w[4]);
+                    $e = new Element($w[0], Element::TYPE_CURRENT, Format::toFloat($w[4]));
                     $e->pins = $circuit->pushNodes([$w[1], $w[2]]);
                     $circuit->elements[] = $e;
                     break;
 
                 case 'V';
-                    $e = new Element($w[0], Element::TYPE_VOLTAGE, $w[4]);
+                    $e = new Element($w[0], Element::TYPE_VOLTAGE, Format::toFloat($w[4]));
                     $e->pins = $circuit->pushNodes([$w[1], $w[2]]);
                     $circuit->elements[] = $e;
                     break;
@@ -72,14 +73,14 @@ class Spice
                     // .DC var start stop step
                     if (count($w) < 5) break;
 
-                    $ops = Analysis::dc($circuit, $w[1], $w[2], $w[3], $w[4]);
+                    $ops = Analysis::dc($circuit, $w[1], Format::toFloat($w[2]), Format::toFloat($w[3]), Format::toFloat($w[4]));
                     break;
 
                 case '.AC':
                     // .AC type np start stop
                     if (count($w) < 5) break;
 
-                    $ops = Analysis::ac($circuit, $w[1], $w[2], $w[3], $w[4]);
+                    $ops = Analysis::ac($circuit, $w[1], $w[2], Format::toFloat($w[3]), Format::toFloat($w[4]));
                     break;
 
                 case '.PLOT':
@@ -93,8 +94,8 @@ class Spice
 
                     foreach ($ops as $x => $row)
                     {
-                        if ($w[1] == 'DC') echo "V($nodeName) [VDC=" . sprintf('%.3e', $x), "] \t\t = " . sprintf('%.3e', ($row[$nodeId - 1])) . " V\n";
-                        if ($w[1] == 'AC') echo "V($nodeName) [f=" . sprintf('%.3e', $x), "] \t\t = " . sprintf('%.3e', ($row[$nodeId - 1])) . " V\n";
+                        if ($w[1] == 'DC') echo "V($nodeName) [VDC=" . Format::toString($x), "] = " . Format::toString($row[$nodeId - 1]) . "V\n";
+                        if ($w[1] == 'AC') echo "V($nodeName) [f=" . Format::toString($x), "] = " . Format::toString($row[$nodeId - 1]) . "V\n";
                     }
 
                     break;
