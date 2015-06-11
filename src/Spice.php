@@ -69,15 +69,17 @@ class Spice
             switch ($w[0])
             {
                 case '.DC':
-                    // .dc vs 0 10 1
-                    if (count($w) < 5)
-                    {
-                        // broken input
-                        break;
-                    }
+                    // .DC var start stop step
+                    if (count($w) < 5) break;
 
                     $ops = Analysis::dc($circuit, $w[1], $w[2], $w[3], $w[4]);
+                    break;
 
+                case '.AC':
+                    // .AC type np start stop
+                    if (count($w) < 5) break;
+
+                    $ops = Analysis::ac($circuit, $w[1], $w[2], $w[3], $w[4]);
                     break;
 
                 case '.PLOT':
@@ -87,9 +89,12 @@ class Spice
                     $nodeName = $m[1];
                     $nodeId = $circuit->findNodeByName($nodeName);
 
-                    foreach ($ops as $V => $row)
+                    $w[1] = strtoupper($w[1]);
+
+                    foreach ($ops as $x => $row)
                     {
-                        echo "V($nodeName) [VDC=$V] \t\t = " . number_format($row[$nodeId - 1], 6) . " V\n";
+                        if ($w[1] == 'DC') echo "V($nodeName) [VDC=" . sprintf('%.3e', $x), "] \t\t = " . sprintf('%.3e', ($row[$nodeId - 1])) . " V\n";
+                        if ($w[1] == 'AC') echo "V($nodeName) [f=" . sprintf('%.3e', $x), "] \t\t = " . sprintf('%.3e', ($row[$nodeId - 1])) . " V\n";
                     }
 
                     break;

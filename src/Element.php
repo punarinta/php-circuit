@@ -82,6 +82,6 @@ class Element
 
         $f *= M_PI * 2;
 
-        return 1 / $this->R + $this->C * $f + $this->L ? (1 / ($this->L * $f)) : 0;
+        return $this->R ? (1 / $this->R) : 0 + $this->C * $f + ($this->L ? (1 / ($this->L * $f)) : 0);
     }
 }

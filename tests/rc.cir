@@ -1,0 +1,8 @@
+* For testing with RC-circuits
+
+V1 0 UCC DC 1
+R1 UCC A 50
+C1 A 0 0.001
+
+.AC DEC 5 1 1000
+.PLOT AC V(A)

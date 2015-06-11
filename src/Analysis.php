@@ -4,6 +4,11 @@ require_once 'Circuit.php';
 
 class Analysis
 {
+    const AC_TYPE_DEC = 1;
+    const AC_TYPE_OCT = 2;
+    const AC_TYPE_LIN = 3;
+    const AC_TYPE_POI = 4;
+
     /**
      * Calculates DC operating point
      *
@@ -35,6 +40,7 @@ class Analysis
     static public function dc($circuit, $source, $start, $stop, $step)
     {
         $ops = [];
+        $circuit->f = 0;
 
         for ($X = $start; $X <= $stop; $X += $step)
         {
@@ -57,6 +63,34 @@ class Analysis
                     throw new \Exception("Element '$source' is not a source.");
             }
 
+            self::dcop($circuit);
+            $ops[(string)$X] = $circuit->V;
+        }
+
+        return $ops;
+    }
+
+    /**
+     * Sweeps frequency
+     *
+     * @param $circuit
+     * @param $type
+     * @param $np
+     * @param $start
+     * @param $stop
+     * @return array
+     */
+    static public function ac($circuit, $type, $np, $start, $stop)
+    {
+        $ops = [];
+
+        // support only decade variation for now
+
+        $m = pow(10, 1 / $np);
+
+        for ($X = $start; $X <= $stop; $X *= $m)
+        {
+            $circuit->f = $X;
             self::dcop($circuit);
             $ops[(string)$X] = $circuit->V;
         }

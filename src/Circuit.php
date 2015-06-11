@@ -11,12 +11,13 @@ class Circuit
     public $elements;
     public $nodes;
 
+    public $f;
+
     /**
      * Prepares G and I matrices
      *
-     * @param int $f
      */
-    public function prepare($f = 0)
+    public function prepare()
     {
         $n = count($this->nodes);
 
@@ -43,7 +44,7 @@ class Circuit
                     {
                         if ($e->pins[0] == $i+1 || $e->pins[1] == $i+1 || $e->pins[0] == $j+1 || $e->pins[1] == $j+1)
                         {
-                            $this->G[$i][$i] += $e->g($f);
+                            $this->G[$i][$i] += $e->g($this->f);
                         }
                     }
                 }
@@ -58,7 +59,7 @@ class Circuit
                         }
                         if ($e->pins[0] == $i+1 && $e->pins[1] == $j+1 || $e->pins[1] == $i+1 && $e->pins[0] == $j+1)
                         {
-                            $this->G[$i][$j] -= $e->g($f);
+                            $this->G[$i][$j] -= $e->g($this->f);
                         }
                     }
                 }
