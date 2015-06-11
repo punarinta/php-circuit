@@ -37,31 +37,31 @@ class Spice
             switch ($w[0][0])
             {
                 case 'R';
-                    $e = new Element($w[0], Element::TYPE_RESISTOR, Format::toFloat($w[3]));
+                    $e = new Element($w[0], Element::RESISTOR, Format::toFloat($w[3]));
                     $e->pins = $circuit->pushNodes([$w[1], $w[2]]);
                     $circuit->elements[] = $e;
                     break;
 
                 case 'C';
-                    $e = new Element($w[0], Element::TYPE_CAPACITOR, Format::toFloat($w[3]));
+                    $e = new Element($w[0], Element::CAPACITOR, Format::toFloat($w[3]));
                     $e->pins = $circuit->pushNodes([$w[1], $w[2]]);
                     $circuit->elements[] = $e;
                     break;
 
                 case 'L';
-                    $e = new Element($w[0], Element::TYPE_INDUCTOR, Format::toFloat($w[3]));
+                    $e = new Element($w[0], Element::INDUCTOR, Format::toFloat($w[3]));
                     $e->pins = $circuit->pushNodes([$w[1], $w[2]]);
                     $circuit->elements[] = $e;
                     break;
 
                 case 'I';
-                    $e = new Element($w[0], Element::TYPE_CURRENT, Format::toFloat($w[4]));
+                    $e = new Element($w[0], Element::CURRENT, Format::toFloat($w[4]));
                     $e->pins = $circuit->pushNodes([$w[1], $w[2]]);
                     $circuit->elements[] = $e;
                     break;
 
                 case 'V';
-                    $e = new Element($w[0], Element::TYPE_VOLTAGE, Format::toFloat($w[4]));
+                    $e = new Element($w[0], Element::VOLTAGE, Format::toFloat($w[4]));
                     $e->pins = $circuit->pushNodes([$w[1], $w[2]]);
                     $circuit->elements[] = $e;
                     break;
@@ -80,7 +80,7 @@ class Spice
                     // .AC type np start stop
                     if (count($w) < 5) break;
 
-                    $ops = Analysis::ac($circuit, $w[1], $w[2], Format::toFloat($w[3]), Format::toFloat($w[4]));
+                    $ops = Analysis::ac($circuit, $w[1], strtoupper($w[2]), Format::toFloat($w[3]), Format::toFloat($w[4]));
                     break;
 
                 case '.PLOT':

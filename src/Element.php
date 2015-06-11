@@ -2,11 +2,11 @@
 
 class Element
 {
-    const TYPE_RESISTOR     = 1;
-    const TYPE_CAPACITOR    = 2;
-    const TYPE_INDUCTOR     = 3;
-    const TYPE_CURRENT      = 4;
-    const TYPE_VOLTAGE      = 5;
+    const RESISTOR     = 1;
+    const CAPACITOR    = 2;
+    const INDUCTOR     = 3;
+    const CURRENT      = 4;
+    const VOLTAGE      = 5;
 
     public $R;
     public $L;
@@ -23,7 +23,7 @@ class Element
      * @param int $type
      * @param int $value
      */
-    public function __construct($name, $type = self::TYPE_RESISTOR, $value = 1)
+    public function __construct($name, $type = self::RESISTOR, $value = 1)
     {
         $this->R = 0;
         $this->L = 0;
@@ -33,24 +33,24 @@ class Element
 
         switch ($type)
         {
-            case self::TYPE_RESISTOR:
+            case self::RESISTOR:
                 $this->R = $value;
                 break;
 
-            case self::TYPE_CAPACITOR:
+            case self::CAPACITOR:
                 $this->C = $value;
                 break;
 
-            case self::TYPE_INDUCTOR:
+            case self::INDUCTOR:
                 $this->L = $value;
                 break;
 
-            case self::TYPE_CURRENT:
+            case self::CURRENT:
                 $this->R = 1e18;
                 $this->I = $value;
                 break;
 
-            case self::TYPE_VOLTAGE:
+            case self::VOLTAGE:
                 $this->setVoltage($value);
                 break;
         }
