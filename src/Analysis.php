@@ -4,11 +4,6 @@ require_once 'Circuit.php';
 
 class Analysis
 {
-    const AC_TYPE_DEC = 1;
-    const AC_TYPE_OCT = 2;
-    const AC_TYPE_LIN = 3;
-    const AC_TYPE_POI = 4;
-
     /**
      * Calculates DC operating point
      *
@@ -79,12 +74,17 @@ class Analysis
      * @param $start
      * @param $stop
      * @return array
+     * @throws Exception
      */
     static public function ac($circuit, $type, $np, $start, $stop)
     {
         $ops = [];
 
         // support only decade variation for now
+        if ($type !== 'DEC')
+        {
+            throw new \Exception('Only decade variation mode is supported for AC analysis.');
+        }
 
         $m = pow(10, 1 / $np);
 
