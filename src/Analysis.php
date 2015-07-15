@@ -80,19 +80,30 @@ class Analysis
     {
         $ops = [];
 
-        // support only decade variation for now
-        if ($type !== 'DEC')
+        if ($type === 'DEC' || $type === 'OCT')
         {
-            throw new \Exception('Only decade variation mode is supported for AC analysis.');
+            $m = pow($type === 'DEC' ? 10 : 8, 1 / $np);
+
+            for ($X = $start; $X <= $stop; $X *= $m)
+            {
+                $circuit->f = $X;
+                self::dcop($circuit);
+                $ops[(string)$X] = $circuit->V;
+            }
         }
-
-        $m = pow(10, 1 / $np);
-
-        for ($X = $start; $X <= $stop; $X *= $m)
+        else if ($type === 'LIN')
         {
-            $circuit->f = $X;
-            self::dcop($circuit);
-            $ops[(string)$X] = $circuit->V;
+            $m = ($stop - $start) / $np;
+            for ($X = $start; $X <= $stop; $X += $m)
+            {
+                $circuit->f = $X;
+                self::dcop($circuit);
+                $ops[(string)$X] = $circuit->V;
+            }
+        }
+        else
+        {
+            throw new \Exception('Unknown variation mode for AC analysis.');
         }
 
         return $ops;
