@@ -83,6 +83,13 @@ class Spice
                     $ops = Analysis::ac($circuit, $w[1], strtoupper($w[2]), Format::toFloat($w[3]), Format::toFloat($w[4]));
                     break;
 
+                case '.TRAN':
+                    if (count($w) < 3) break;
+
+                    // support only step/stop for now
+                    $ops = Analysis::tran($circuit, Format::toFloat($w[1]), Format::toFloat($w[2]));
+                    break;
+
                 case '.PLOT':
                     // very basic support for now
 
@@ -96,6 +103,7 @@ class Spice
                     {
                         if ($w[1] == 'DC') echo "V($nodeName) [VDC=" . Format::toString($x), "] = " . Format::toString($row[$nodeId - 1]) . "V\n";
                         if ($w[1] == 'AC') echo "V($nodeName) [f=" . Format::toString($x), "] = " . Format::toString($row[$nodeId - 1]) . "V\n";
+                        if ($w[1] == 'TRAN') echo "V($nodeName) [t=" . Format::toString($x), "] = " . Format::toString($row[$nodeId - 1]) . "V\n";
                     }
 
                     break;

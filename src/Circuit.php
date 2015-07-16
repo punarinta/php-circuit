@@ -12,13 +12,32 @@ class Circuit
     public $nodes;
 
     public $f;
+    public $t;
 
     /**
      * Prepares G and I matrices
      *
+     * @param int $dt
      */
-    public function prepare()
+    public function prepare($dt = 0)
     {
+        if ($dt)
+        {
+            // that's a transient mode, save last voltages
+            $V0 = $this->V;
+
+            foreach ($this->elements as $k => $e)
+            {
+                if ($e->type == Element::CAPACITOR)
+                {
+                    $this->elements[$k]->I = -$e->C * (($e->pins[0] ? $V0[$e->pins[0] - 1] : 0) - ($e->pins[1] ? $V0[$e->pins[1] - 1] : 0)) / $dt;
+
+                    echo "dV = " . (($e->pins[0] ? $V0[$e->pins[0] - 1] : 0) - ($e->pins[1] ? $V0[$e->pins[1] - 1] : 0)) . "\n";
+                    echo "current = {$e->I}\n";
+                }
+            }
+        }
+
         $n = count($this->nodes);
 
         for ($i = 0; $i < $n; $i++)
@@ -44,7 +63,7 @@ class Circuit
                     {
                         if ($e->pins[0] == $i+1 || $e->pins[1] == $i+1 || $e->pins[0] == $j+1 || $e->pins[1] == $j+1)
                         {
-                            $this->G[$i][$i] += $e->g($this->f);
+                            $this->G[$i][$i] += $dt ? $e->gt($dt) : $e->g($this->f);
                         }
                     }
                 }
@@ -59,7 +78,7 @@ class Circuit
                         }
                         if ($e->pins[0] == $i+1 && $e->pins[1] == $j+1 || $e->pins[1] == $i+1 && $e->pins[0] == $j+1)
                         {
-                            $this->G[$i][$j] -= $e->g($this->f);
+                            $this->G[$i][$j] -= $dt ? $e->gt($dt) : $e->g($this->f);
                         }
                     }
                 }

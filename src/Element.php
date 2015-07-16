@@ -28,6 +28,7 @@ class Element
         $this->R = 0;
         $this->L = 0;
         $this->C = 0;
+        $this->I = 0;
         $this->type = $type;
         $this->name = $name;
 
@@ -77,11 +78,29 @@ class Element
     {
         if ($f <= 0)
         {
-            return 1 / $this->R;
+            return $this->R ? (1 / $this->R) : 0;
         }
 
         $f *= M_PI * 2;
 
         return $this->R ? (1 / $this->R) : 0 + $this->C * $f + ($this->L ? (1 / ($this->L * $f)) : 0);
+    }
+
+    /**
+     * Returns conductivity for transient mode
+     *
+     * @param $dt
+     * @return float
+     */
+    public function gt($dt)
+    {
+        if ($this->R)
+        {
+            return 1 / $this->R;
+        }
+
+        // TODO: support inductance
+
+        return $this->C / $dt;
     }
 }
