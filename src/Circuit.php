@@ -31,9 +31,6 @@ class Circuit
                 if ($e->type == Element::CAPACITOR)
                 {
                     $this->elements[$k]->I = -$e->C * (($e->pins[0] ? $V0[$e->pins[0] - 1] : 0) - ($e->pins[1] ? $V0[$e->pins[1] - 1] : 0)) / $dt;
-
-                    echo "dV = " . (($e->pins[0] ? $V0[$e->pins[0] - 1] : 0) - ($e->pins[1] ? $V0[$e->pins[1] - 1] : 0)) . "\n";
-                    echo "current = {$e->I}\n";
                 }
             }
         }

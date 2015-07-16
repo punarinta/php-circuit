@@ -123,27 +123,14 @@ class Analysis
     {
         $ops = [];
 
-        // find operating point first
-        // self::dcop($circuit);
-
         for ($t = $start; $t <= $stop; $t += $step)
         {
             $circuit->t = $t;
-
-        /*    echo 'V1 '; print_r($circuit->V);
-            echo 'I1 '; print_r($circuit->I);*/
-
             $circuit->prepare($step);
             $circuit->solve();
 
             $ops[(string)$t] = $circuit->V;
-
-        /*   echo 'V2 '; print_r($circuit->V);
-            echo 'I2 '; print_r($circuit->I);
-            echo "\n\n\n";*/
         }
-
-        //print_r($ops);
 
         return $ops;
     }
