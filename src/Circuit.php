@@ -23,14 +23,13 @@ class Circuit
     {
         if ($dt)
         {
-            // that's a transient mode, save last voltages
-            $V0 = $this->V;
+            // that's a transient mode, so do some preparations
 
             foreach ($this->elements as $k => $e)
             {
                 if ($e->type == Element::CAPACITOR)
                 {
-                    $this->elements[$k]->I = -$e->C * (($e->pins[0] ? $V0[$e->pins[0] - 1] : 0) - ($e->pins[1] ? $V0[$e->pins[1] - 1] : 0)) / $dt;
+                    $this->elements[$k]->I = -$e->C * (($e->pins[0] ? $this->V[$e->pins[0] - 1] : 0) - ($e->pins[1] ? $this->V[$e->pins[1] - 1] : 0)) / $dt;
                 }
             }
         }
