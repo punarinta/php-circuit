@@ -1,8 +1,6 @@
 <?php
 
-require_once 'Circuit.php';
-require_once 'Analysis.php';
-require_once 'Format.php';
+namespace PhpCircuit;
 
 class Spice
 {

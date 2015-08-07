@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Circuit.php';
+namespace PhpCircuit;
 
 class Analysis
 {
@@ -8,7 +8,7 @@ class Analysis
      * Calculates DC operating point
      *
      * @param $circuit
-     * @throws Exception
+     * @throws \Exception
      */
     static public function dcop($circuit)
     {
@@ -30,7 +30,7 @@ class Analysis
      * @param $stop
      * @param $step
      * @return array
-     * @throws Exception
+     * @throws \Exception
      */
     static public function dc($circuit, $source, $start, $stop, $step)
     {
@@ -74,7 +74,7 @@ class Analysis
      * @param $start
      * @param $stop
      * @return array
-     * @throws Exception
+     * @throws \Exception
      */
     static public function ac($circuit, $type, $np, $start, $stop)
     {
@@ -117,7 +117,7 @@ class Analysis
      * @param $stop
      * @param int $start
      * @return array
-     * @throws Exception
+     * @throws \Exception
      */
     static public function tran($circuit, $step, $stop, $start = 0)
     {

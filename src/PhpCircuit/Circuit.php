@@ -1,7 +1,6 @@
 <?php
 
-require_once 'Matrix.php';
-require_once 'Element.php';
+namespace PhpCircuit;
 
 class Circuit
 {

@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpCircuit;
+
 class Element
 {
     const RESISTOR     = 1;

@@ -1,5 +1,7 @@
 <?php
 
+namespace PhpCircuit;
+
 const FEMTO     = 1e-15;
 const PICO      = 1e-12;
 const NANO      = 1e-9;
